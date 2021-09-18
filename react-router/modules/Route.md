@@ -39,27 +39,36 @@ class Route extends React.Component {
     return (
       <RouterContext.Consumer>
         {(context) => {
+          // context 应该包含 history | location | match | staticContext
+
           // sogo  原来是如此判断是否被 Router 所包裹
           invariant(context, "You should not use <Route> outside a <Router>");
 
           const location = this.props.location || context.location;
+
+          // match 对象的 来源优先级（Switch -> props.path -> context）
+          // computedMatch 是 Switch 组件传下来的， 优先级最高
           const match = this.props.computedMatch
             ? this.props.computedMatch // <Switch> already computed the match for us
-            : this.props.path
-            //      
+            : // Route 组件上的 path 属性，优先级第二
+            this.props.path
             ? matchPath(location.pathname, this.props)
-            : context.match;
+            : // 最后是 context 上的 match 对象
+              context.match;
 
+          // 重新组装 props， 往下透传
           const props = { ...context, location, match };
 
           let { children, component, render } = this.props;
 
+          // 这边兼容了 Preact 因为 Preact 会传一个空数组来表示没有children，统一在没children 传 null
           // Preact uses an empty array as children by
           // default, so use null if that's the case.
           if (Array.isArray(children) && isEmptyChildren(children)) {
             children = null;
           }
 
+          // <Route>组件提供的三种渲染方式, 优先级 children > component > render
           return (
             <RouterContext.Provider value={props}>
               {props.match
@@ -148,7 +157,6 @@ if (__DEV__) {
 
 export default Route;
 ```
-
 
 ## 包
 
