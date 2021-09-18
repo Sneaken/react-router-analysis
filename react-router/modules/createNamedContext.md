@@ -23,7 +23,7 @@ export default createNamedContext;
 
 > (A smaller) Polyfill for the React context API
 
-主要还是应为 package.json 里面 react 版本范围 是 >= 15, 使用者可能用不了 React context API。
+主要还是应为 package.json 里面 react 版本范围 是 >= 15, ~~使用者可能用不了 React context API~~, 由于React16和15的Context互不兼容。
 
 #### 依赖包
 
