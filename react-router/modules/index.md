@@ -83,12 +83,17 @@ global[key] = process.env.BUILD_FORMAT
 
 ### 3. export 与 import 的复合写法
 
+```js
 export { default as MemoryRouter } from "./MemoryRouter.js";
+```
 
 等同于（注意 不是等价！！！）
 
+```js
 import MemoryRouter from "./MemoryRouter.js";
+// 这边编辑器是报错的 所以实际代码是不能这样写的, 也不可能用 export { MemoryRouter } 来代替, 意思就不一样了
 export MemoryRouter;
+```
 
 ```js
 export { default as MemoryRouter } from "./MemoryRouter.js";
