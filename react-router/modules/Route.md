@@ -1,6 +1,6 @@
 # Route.js
 
-## 源码
+## 源码以及解析
 
 ```js
 import React from "react";
@@ -76,12 +76,16 @@ class Route extends React.Component {
                   ? typeof children === "function"
                     ? __DEV__
                       ? evalChildrenDev(children, props, this.props.path)
-                      : children(props)
-                    : children
+                      : // 可以看到这边 如果 children 是函数的话 就把 props 传下去
+                        children(props)
+                    : // 否则 children 就应该是一个组件
+                      children
                   : component
-                  ? React.createElement(component, props)
+                  ? // 如果存在 component 一样把 props 传下去
+                    React.createElement(component, props)
                   : render
-                  ? render(props)
+                  ? // 最后如果存在 render 的，目前看来 和 children 是个函数差不多
+                    render(props)
                   : null
                 : typeof children === "function"
                 ? __DEV__
