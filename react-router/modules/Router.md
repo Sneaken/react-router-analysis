@@ -84,7 +84,7 @@ class Router extends React.Component {
           history: this.props.history,
           // 当前的路由信息
           location: this.state.location,
-          // 是否为跟路由
+          // 是否为根路由
           match: Router.computeRootMatch(this.state.location.pathname),
           // staticContext: 用于服务端渲染
           staticContext: this.props.staticContext,
