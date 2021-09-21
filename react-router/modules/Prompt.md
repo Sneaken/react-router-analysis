@@ -66,3 +66,43 @@ if (__DEV__) {
 
 export default Prompt;
 ```
+
+## 记录
+
+1. 与 antd Modal 结合使用
+
+```jsx
+import { Prompt, useHistory } from "react-router-dom";
+import { Modal } from "antd";
+
+const Page = () => {
+  const history = useHistory();
+  const [isOk, setIsOk] = useState(false);
+  const handleMessage = (location, action) => {
+    // 不需要弹框的时候直接跳转路由
+    if (isOk) return true;
+    Modal.confirm({
+      title: "title",
+      content: "content",
+      onOk: (close) => {
+        // 设置弹框关闭
+        close();
+        setIsOk(true);
+        // 手动跳转路由
+        history.push(location.pathname);
+      },
+      onCancel: (close) => {
+        close();
+      },
+    });
+    // 弹框的 onOk 和 onCancel 是异步进行的，所以这边 return false 主要是为了阻止路由跳转，然后由弹框自己处理路由的跳转。
+    return false;
+  };
+  return (
+    <div>
+      ...something
+      <Prompt when={!isOk} message={handleMessage} />
+    </div>
+  );
+};
+```
